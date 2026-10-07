@@ -79,12 +79,6 @@ svg { width: 1em; height: 1em; }
 .nav__links { display: flex; gap: 28px; }
 .nav__links a { text-decoration: none; font-size: 15px; opacity: .85; }
 .nav__links a:hover { opacity: 1; color: var(--peach); }
-.lang { display: flex; border: 1px solid rgba(242, 231, 220, .35); border-radius: 99px; padding: 2px; }
-.lang button {
-  white-space: nowrap; background: none; border: 0; color: inherit; font: 600 11px/1 inherit; font-family: inherit; letter-spacing: .08em;
-  padding: 7px 10px; border-radius: 99px; cursor: pointer; opacity: .7;
-}
-.lang button[aria-pressed="true"] { background: var(--cream); color: var(--navy); opacity: 1; }
 .nav__toggle { display: none; }
 
 /* HERO */
@@ -226,7 +220,6 @@ svg { width: 1em; height: 1em; }
   .nav__cta { display: none; }
   .nav__name { font-size: 16px; }
   .nav__mark { width: 34px; height: 34px; }
-  .lang button { padding: 7px 8px; }
 }
 @media (max-width: 380px) {
   .nav__name small { display: none; }
