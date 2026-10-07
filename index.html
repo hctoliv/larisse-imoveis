@@ -29,6 +29,8 @@
   </symbol>
 </svg>
 
+<div class="progress" aria-hidden="true"><span data-progress></span></div>
+
 <header class="nav" id="top">
   <a href="#top" class="nav__brand" aria-label="Larisse Silva, início">
     <span class="nav__mark"><svg><use href="#key"/></svg></span>
@@ -46,110 +48,129 @@
 <main>
 
   <!-- HERO -->
-  <section class="hero">
-    <div class="wrap">
+  <section class="hero" data-hero>
+    <video class="hero__bg" src="video/emilly-loop.mp4" poster="img/emilly-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+    <div class="hero__shade"></div>
+    <div class="wrap hero__inner">
       <div class="eyebrow-row">
         <span>Larisse Silva · Minha Casa Minha Vida SP</span>
         <span>CRECI 335509</span>
       </div>
       <div class="hero__grid">
-        <div class="hero__copy">
-          <h1>Te ajudo a realizar o seu <em>maior sonho.</em></h1>
-          <p class="hero__lead">Especialista <strong>Minha Casa Minha Vida</strong> em todas as regiões de São Paulo. Do primeiro atendimento à entrega das chaves do seu primeiro lar.</p>
-          <div class="hero__actions">
+        <div class="hero__copy" data-parallax="-0.15">
+          <h1 data-split>Te ajudo a realizar o seu <em>maior sonho.</em></h1>
+          <p class="hero__lead rise" style="--d:.55s">Especialista <strong>Minha Casa Minha Vida</strong> em todas as regiões de São Paulo. Do primeiro atendimento à entrega das chaves do seu primeiro lar.</p>
+          <div class="hero__actions rise" style="--d:.7s">
             <a href="#simular" class="btn">Faça sua simulação</a>
             <a href="#chaves" class="btn btn--ghost">Ver chaves entregues</a>
           </div>
-          <ul class="hero__facts">
-            <li><b>1º</b><span>lugar no Brasil como vendedora</span></li>
-            <li><b>SP</b><span>todas as regiões da capital</span></li>
-            <li><b>MCMV</b><span>especialista Minha Casa Minha Vida</span></li>
-          </ul>
         </div>
-        <figure class="hero__media">
-          <video src="video/emilly-loop.mp4" poster="img/emilly-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
-          <figcaption><svg><use href="#key"/></svg><span>Entrega de chaves da Emilly · julho 2026</span></figcaption>
-        </figure>
+        <div class="hero__stage rise" style="--d:.35s">
+          <figure class="hero__media" data-tilt>
+            <video src="video/emilly-loop.mp4" poster="img/emilly-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+            <figcaption><svg><use href="#key"/></svg><span>Entrega de chaves da Emilly · julho 2026</span></figcaption>
+          </figure>
+          <span class="badge badge--a"><b>1º</b> lugar no Brasil<br>como vendedora</span>
+          <span class="badge badge--b"><svg><use href="#key"/></svg> Mais um sonho<br>realizado</span>
+        </div>
       </div>
     </div>
+    <a href="#marquee" class="hero__scroll" aria-label="Rolar para baixo"><span></span></a>
   </section>
+
+  <div class="marquee" id="marquee" aria-hidden="true">
+    <div class="marquee__track" data-marquee>
+      <span>Primeiro lar <svg><use href="#key"/></svg> Chave na mão <svg><use href="#key"/></svg> Minha Casa Minha Vida <svg><use href="#key"/></svg> Todas as regiões de São Paulo <svg><use href="#key"/></svg> Sonho realizado <svg><use href="#key"/></svg></span>
+      <span>Primeiro lar <svg><use href="#key"/></svg> Chave na mão <svg><use href="#key"/></svg> Minha Casa Minha Vida <svg><use href="#key"/></svg> Todas as regiões de São Paulo <svg><use href="#key"/></svg> Sonho realizado <svg><use href="#key"/></svg></span>
+    </div>
+  </div>
 
 
   <!-- COMO FUNCIONA -->
   <section class="section" id="como">
-    <div class="wrap">
-      <p class="eyebrow">Como funciona</p>
-      <h2>Do sonho à chave na mão</h2>
-      <ol class="steps">
+    <div class="wrap journey">
+      <div class="journey__head">
+        <p class="eyebrow">Como funciona</p>
+        <h2 data-words>Do sonho à chave na mão</h2>
+        <p class="muted">Quatro etapas, e eu do seu lado em todas elas.</p>
+      </div>
+      <div class="journey__path" data-journey>
+      <span class="journey__line" aria-hidden="true"><span class="journey__fill"></span><span class="journey__key"><svg><use href="#key"/></svg></span></span>
+      <ol class="journey__steps">
         <li>
-          <span class="steps__n">01</span>
+          <span class="journey__n">01</span>
           <h3>Simulação</h3>
           <p>Você me conta sua renda e onde quer morar. Eu calculo quanto de subsídio e de parcela cabe pra você.</p>
         </li>
         <li>
-          <span class="steps__n">02</span>
+          <span class="journey__n">02</span>
           <h3>O imóvel certo</h3>
           <p>Te mostro as opções por região e renda mínima, e vamos juntas visitar o decorado.</p>
         </li>
         <li>
-          <span class="steps__n">03</span>
+          <span class="journey__n">03</span>
           <h3>Aprovação</h3>
           <p>Cuido da documentação e da análise de crédito com você. FGTS na entrada, quando dá, entra aqui.</p>
         </li>
         <li>
-          <span class="steps__n">04</span>
+          <span class="journey__n">04</span>
           <h3>Chave na mão</h3>
           <p>Acompanho a obra até a entrega das chaves. O primeiro lar a gente nunca esquece.</p>
         </li>
       </ol>
+      </div>
     </div>
   </section>
 
 
   <!-- CHAVES ENTREGUES -->
-  <section class="section section--navy" id="chaves">
-    <div class="wrap">
-      <p class="eyebrow eyebrow--light">Chaves entregues</p>
-      <h2>O primeiro lar a gente nunca esquece</h2>
-      <p class="keys__sub">Famílias que confiaram no meu trabalho e hoje estão com as chaves nas mãos.</p>
-
-      <div class="keys">
-        <figure class="keys__video">
-          <video src="video/emilly.mp4" poster="img/emilly-poster.jpg" playsinline preload="none" controls></video>
-          <figcaption>
-            <b>Emilly</b>
-            <span>"Mais um sonho realizado! Finalmente chegou a entrega de chaves."</span>
-          </figcaption>
+  <section class="gallery" id="chaves" data-gallery>
+    <div class="gallery__sticky">
+      <div class="wrap gallery__head">
+        <p class="eyebrow eyebrow--light">Chaves entregues</p>
+        <div class="gallery__title">
+          <h2 data-words>O primeiro lar a gente nunca esquece</h2>
+          <p class="gallery__count"><b data-gallery-i>01</b> / 05</p>
+        </div>
+      </div>
+      <div class="gallery__track" data-gallery-track>
+        <figure class="slide slide--video">
+          <div class="slide__media">
+            <video src="video/emilly.mp4" poster="img/emilly-poster.jpg" playsinline preload="none" loop></video>
+            <button class="slide__play" type="button" aria-label="Tocar vídeo com som"><span></span></button>
+          </div>
+          <figcaption><b>Emilly</b><span>"Mais um sonho realizado! Finalmente chegou a entrega de chaves."</span></figcaption>
         </figure>
-        <figure class="card">
-          <img src="img/roseli-valmir.jpg" alt="Roseli e Valmir segurando a chave do primeiro apartamento ao lado da Larisse" loading="lazy" width="1080" height="1350">
+        <figure class="slide">
+          <div class="slide__media"><img src="img/roseli-valmir.jpg" alt="Roseli e Valmir segurando a chave do primeiro apartamento ao lado da Larisse" loading="lazy" width="1080" height="1350"></div>
           <figcaption><b>Roseli & Valmir</b><span>"Eles sonharam, acreditaram e conquistaram!"</span></figcaption>
         </figure>
-        <figure class="card">
-          <img src="img/beatriz-nikyson.jpg" alt="Beatriz e Nikyson com a placa 'Nossa nova vida começa agora' e a Larisse" loading="lazy" width="1080" height="1440">
+        <figure class="slide">
+          <div class="slide__media"><img src="img/beatriz-nikyson.jpg" alt="Beatriz e Nikyson com a placa 'Nossa nova vida começa agora' e a Larisse" loading="lazy" width="1080" height="1440"></div>
           <figcaption><b>Beatriz & Nikyson</b><span>"Hoje celebramos mais um sonho realizado."</span></figcaption>
         </figure>
-        <figure class="card">
-          <img src="img/carolina.jpg" alt="Carolina com a placa 'Uma nova fase da minha vida começa agora' e a Larisse" loading="lazy" width="1080" height="1440">
+        <figure class="slide">
+          <div class="slide__media"><img src="img/carolina.jpg" alt="Carolina com a placa 'Uma nova fase da minha vida começa agora' e a Larisse" loading="lazy" width="1080" height="1440"></div>
           <figcaption><b>Carolina</b><span>"Não deixou o medo paralisar o desejo da casa própria."</span></figcaption>
         </figure>
-        <figure class="card">
-          <img src="img/kaliton-obra.jpg" alt="Kaliton e o filho em frente ao prédio em obra do futuro apartamento" loading="lazy" width="1080" height="1439">
+        <figure class="slide">
+          <div class="slide__media"><img src="img/kaliton-obra.jpg" alt="Kaliton e o filho em frente ao prédio em obra do futuro apartamento" loading="lazy" width="1080" height="1439"></div>
           <figcaption><b>Kaliton</b><span>"Foi visitar seu futuro lar!"</span></figcaption>
         </figure>
       </div>
+      <div class="wrap gallery__bar" aria-hidden="true"><span data-gallery-bar></span></div>
     </div>
   </section>
 
   <!-- SOBRE -->
   <section class="section" id="sobre">
     <div class="wrap about">
-      <figure class="about__photo">
-        <img src="img/premio-2025.jpg" alt="Larisse Silva segurando o troféu de primeiro lugar em vendas de 2025" loading="lazy" width="1080" height="1440">
+      <figure class="about__photo" data-clip>
+        <img data-parallax="0.08" src="img/premio-2025.jpg" alt="Larisse Silva segurando o troféu de primeiro lugar em vendas de 2025" loading="lazy" width="1080" height="1440">
       </figure>
       <div class="about__copy">
         <p class="eyebrow">Quem te atende</p>
-        <h2>Oi, eu sou a Larisse.</h2>
+        <h2 data-words>Oi, eu sou a Larisse.</h2>
         <p class="about__quote">"Foi mais do que bater uma meta, foi realizar sonhos junto com famílias que confiaram em mim."</p>
         <p>Sou corretora especialista em Minha Casa Minha Vida e atendo todas as regiões de São Paulo. Ver histórias de famílias florescendo no primeiro lar é o que me move todos os dias.</p>
         <p>Em 2025 fiquei em 1º lugar no Brasil como vendedora. Gratidão a Deus, à minha equipe e a cada família que confiou no meu trabalho.</p>
@@ -172,8 +193,13 @@
     <div class="wrap sim">
       <div class="sim__copy">
         <p class="eyebrow eyebrow--light">Simulação</p>
-        <h2>Me chama e faça sua simulação</h2>
+        <h2 data-words>Me chama e faça sua simulação</h2>
         <p>Responde 4 perguntas e a mensagem já vai pronta pra mim. E aí, já está pronto(a) pra conquistar o seu cantinho?</p>
+        <div class="chat" aria-live="polite">
+          <div class="chat__head"><span class="nav__mark"><svg><use href="#key"/></svg></span><span><b>Larisse Silva</b><small>Sua mensagem, ao vivo</small></span></div>
+          <div class="chat__bubble" data-chat>Oi, Larisse! Quero fazer minha simulação do Minha Casa Minha Vida.</div>
+          <span class="chat__typing" data-typing><i></i><i></i><i></i></span>
+        </div>
       </div>
       <form class="sim__form" id="sim-form" novalidate>
         <label><span>Seu nome</span>
