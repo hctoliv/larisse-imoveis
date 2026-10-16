@@ -38,6 +38,7 @@
   </a>
   <nav class="nav__links" aria-label="Principal">
     <a href="#como">Como funciona</a>
+    <a href="#regioes">Regiões</a>
     <a href="#chaves">Chaves entregues</a>
     <a href="#sobre">Sobre</a>
   </nav>
@@ -47,35 +48,37 @@
 
 <main>
 
-  <!-- HERO -->
+  <!-- HERO: claro, com a Larisse e o formulário já na primeira dobra -->
   <section class="hero" data-hero>
-    <video class="hero__bg" src="video/emilly-loop.mp4" poster="img/emilly-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
-    <div class="hero__shade"></div>
-    <div class="wrap hero__inner">
-      <div class="eyebrow-row">
-        <span>Larisse Silva · Minha Casa Minha Vida SP</span>
-        <span>CRECI 335509</span>
-      </div>
-      <div class="hero__grid">
-        <div class="hero__copy" data-parallax="-0.15">
-          <h1 data-split>Te ajudo a realizar o seu <em>maior sonho.</em></h1>
-          <p class="hero__lead rise" style="--d:.55s">Especialista <strong>Minha Casa Minha Vida</strong> em todas as regiões de São Paulo. Do primeiro atendimento à entrega das chaves do seu primeiro lar.</p>
-          <div class="hero__actions rise" style="--d:.7s">
-            <a href="#simular" class="btn">Faça sua simulação</a>
-            <a href="#chaves" class="btn btn--ghost">Ver chaves entregues</a>
+    <div class="hero__blob" aria-hidden="true"></div>
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="hero__kicker rise" style="--d:.05s"><svg><use href="#key"/></svg> Especialista Minha Casa Minha Vida · CRECI 335509</p>
+        <h1 data-split>Te ajudo a realizar o seu <em>maior sonho.</em></h1>
+        <p class="hero__lead rise" style="--d:.45s">Seu primeiro apê em <strong>todas as regiões de São Paulo</strong>, com alguém do seu lado da simulação à entrega das chaves.</p>
+
+        <form class="lead rise" style="--d:.6s" id="lead-form" novalidate>
+          <p class="lead__title">Fale com a <b>Larisse</b></p>
+          <p class="lead__sub">Tire suas dúvidas e descubra o que cabe no seu bolso.</p>
+          <div class="lead__row">
+            <label class="sr" for="lead-nome">Nome</label>
+            <input id="lead-nome" name="nome" placeholder="Seu nome" autocomplete="given-name" required>
+            <label class="sr" for="lead-cel">Celular</label>
+            <input id="lead-cel" name="cel" placeholder="(11) 90000-0000" inputmode="tel" autocomplete="tel" required>
+            <button class="btn" type="submit">Enviar</button>
           </div>
-        </div>
-        <div class="hero__stage rise" style="--d:.35s">
-          <figure class="hero__media" data-tilt>
-            <video src="video/emilly-loop.mp4" poster="img/emilly-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
-            <figcaption><svg><use href="#key"/></svg><span>Entrega de chaves da Emilly · julho 2026</span></figcaption>
-          </figure>
-          <span class="badge badge--a"><b>1º</b> lugar no Brasil<br>como vendedora</span>
-          <span class="badge badge--b"><svg><use href="#key"/></svg> Mais um sonho<br>realizado</span>
-        </div>
+          <p class="lead__safe"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3zm-1.2 14.2-3.5-3.5 1.4-1.4 2.1 2.1 4.6-4.6 1.4 1.4-6 6z" fill="currentColor"/></svg> Seus dados ficam só entre a gente</p>
+          <p class="lead__err" role="alert" hidden>Preenche seu nome e celular pra eu te chamar.</p>
+        </form>
+      </div>
+
+      <div class="hero__person rise" style="--d:.25s">
+        <div class="hero__ring" aria-hidden="true"></div>
+        <img src="img/larisse.png" alt="Larisse Silva, corretora especialista em Minha Casa Minha Vida" width="323" height="785" data-float>
+        <span class="badge badge--a" data-float="-1"><b>1º</b> lugar no Brasil<br>como vendedora</span>
+        <span class="badge badge--b" data-float=".6"><svg><use href="#key"/></svg> Mais um sonho<br>realizado</span>
       </div>
     </div>
-    <a href="#marquee" class="hero__scroll" aria-label="Rolar para baixo"><span></span></a>
   </section>
 
   <div class="marquee" id="marquee" aria-hidden="true">
@@ -85,6 +88,33 @@
     </div>
   </div>
 
+
+  <!-- CONDIÇÕES -->
+  <section class="perks">
+    <div class="wrap perks__grid">
+      <div class="perks__art" aria-hidden="true">
+        <svg viewBox="0 0 320 260">
+          <circle cx="232" cy="70" r="40" fill="#d9572c" data-spin/>
+          <circle cx="150" cy="150" r="104" fill="#1f2a44"/>
+          <path d="M40 222c40-30 200-30 240 0v20H40z" fill="#c9d3b4"/>
+          <path d="M96 140l58-48 58 48v82H96z" fill="#f2e7dc"/>
+          <path d="M84 146l70-60 70 60" fill="none" stroke="#d9572c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="140" y="176" width="28" height="46" rx="3" fill="#1f2a44"/>
+          <rect x="108" y="150" width="22" height="20" rx="2" fill="#f7dcd0"/>
+          <rect x="178" y="150" width="22" height="20" rx="2" fill="#f7dcd0"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="perks__title" data-words>Você pode conquistar o seu apê, com condições que cabem no bolso!</h2>
+        <ul class="perks__list">
+          <li><span class="perks__ok"></span><span>Use seu <b>FGTS</b> na compra</span></li>
+          <li><span class="perks__ok"></span><span>Receba <b>subsídio</b> do Minha Casa Minha Vida se a sua renda se encaixa nas faixas do programa</span></li>
+          <li><span class="perks__ok"></span><span>Tenha acesso a <b>juros menores</b> que no financiamento comum</span></li>
+        </ul>
+        <a href="#como" class="link-arrow">Saiba como funciona</a>
+      </div>
+    </div>
+  </section>
 
   <!-- COMO FUNCIONA -->
   <section class="section" id="como">
@@ -123,13 +153,32 @@
   </section>
 
 
+  <!-- REGIÕES -->
+  <section class="section regions" id="regioes">
+    <div class="wrap">
+      <p class="eyebrow">Seu próximo lar está aqui</p>
+      <div class="regions__head">
+        <h2 data-words>Em qual região de São Paulo você quer morar?</h2>
+        <p class="muted">Escolhe a região e eu te mostro as opções que cabem na sua renda.</p>
+      </div>
+      <div class="regions__grid">
+        <button type="button" class="region" data-region="Zona Leste"><span class="region__tag">Zona</span><b>Leste</b><span class="region__go">Ver opções</span></button>
+        <button type="button" class="region" data-region="Zona Norte"><span class="region__tag">Zona</span><b>Norte</b><span class="region__go">Ver opções</span></button>
+        <button type="button" class="region" data-region="Zona Sul"><span class="region__tag">Zona</span><b>Sul</b><span class="region__go">Ver opções</span></button>
+        <button type="button" class="region" data-region="Zona Oeste"><span class="region__tag">Zona</span><b>Oeste</b><span class="region__go">Ver opções</span></button>
+        <button type="button" class="region" data-region="Centro"><span class="region__tag">Região</span><b>Centro</b><span class="region__go">Ver opções</span></button>
+        <button type="button" class="region region--any" data-region="Ainda não sei"><span class="region__tag">Ainda não sei</span><b>Me ajuda?</b><span class="region__go">Vamos conversar</span></button>
+      </div>
+    </div>
+  </section>
+
   <!-- CHAVES ENTREGUES -->
   <section class="gallery" id="chaves" data-gallery>
     <div class="gallery__sticky">
       <div class="wrap gallery__head">
-        <p class="eyebrow eyebrow--light">Chaves entregues</p>
+        <p class="eyebrow eyebrow--light">Chaves entregues · o primeiro lar a gente nunca esquece</p>
         <div class="gallery__title">
-          <h2 data-words>O primeiro lar a gente nunca esquece</h2>
+          <h2 data-words>Já são muitas histórias com a chave na mão</h2>
           <p class="gallery__count"><b data-gallery-i>01</b> / 05</p>
         </div>
       </div>
@@ -146,11 +195,11 @@
           <figcaption><b>Roseli & Valmir</b><span>"Eles sonharam, acreditaram e conquistaram!"</span></figcaption>
         </figure>
         <figure class="slide">
-          <div class="slide__media"><img src="img/beatriz-nikyson.jpg" alt="Beatriz e Nikyson com a placa 'Nossa nova vida começa agora' e a Larisse" loading="lazy" width="1080" height="1440"></div>
+          <div class="slide__media"><img src="img/beatriz-nikyson.jpg" alt="Beatriz e Nikyson com a placa 'Nossa nova vida começa agora'" loading="lazy" width="1080" height="1440"></div>
           <figcaption><b>Beatriz & Nikyson</b><span>"Hoje celebramos mais um sonho realizado."</span></figcaption>
         </figure>
         <figure class="slide">
-          <div class="slide__media"><img src="img/carolina.jpg" alt="Carolina com a placa 'Uma nova fase da minha vida começa agora' e a Larisse" loading="lazy" width="1080" height="1440"></div>
+          <div class="slide__media"><img src="img/carolina.jpg" alt="Carolina comemorando o primeiro apartamento com a placa 'Uma nova fase da minha vida começa agora'" loading="lazy" width="1080" height="1440"></div>
           <figcaption><b>Carolina</b><span>"Não deixou o medo paralisar o desejo da casa própria."</span></figcaption>
         </figure>
         <figure class="slide">
@@ -246,7 +295,7 @@
         <span class="nav__mark"><svg><use href="#key"/></svg></span>
         <span class="nav__name">Larisse Silva<small>MCMV São Paulo</small></span>
       </a>
-      <p class="foot__tag">Te ajudo a realizar o seu maior sonho.</p>
+      <p class="foot__tag">Do primeiro direct à entrega das chaves,<br>eu tô com você.</p>
     </div>
     <div class="foot__links">
       <a href="https://www.instagram.com/larisseimoveis/" target="_blank" rel="noopener">@larisseimoveis</a>
@@ -256,6 +305,11 @@
   </div>
   <p class="wrap foot__small">Simulações são estimativas. Aprovação, subsídio e condições dependem da análise de crédito e das regras vigentes do programa.</p>
 </footer>
+
+<div class="side" aria-label="Contato rápido">
+  <a href="#simular" class="side__btn side__btn--wa" aria-label="Simular pelo WhatsApp"><svg><use href="#wa"/></svg></a>
+  <a href="https://www.instagram.com/larisseimoveis/" target="_blank" rel="noopener" class="side__btn" aria-label="Instagram @larisseimoveis"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 8.2a3.2 3.2 0 1 1 0-6.4 3.2 3.2 0 0 1 0 6.4zM17.3 5.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4zM12 2c-2.7 0-3 0-4.1.1C4.3 2.3 2.3 4.3 2.1 7.9 2 9 2 9.3 2 12s0 3 .1 4.1c.2 3.6 2.2 5.6 5.8 5.8 1.1.1 1.4.1 4.1.1s3 0 4.1-.1c3.6-.2 5.6-2.2 5.8-5.8.1-1.1.1-1.4.1-4.1s0-3-.1-4.1c-.2-3.6-2.2-5.6-5.8-5.8C15 2 14.7 2 12 2zm0 1.8c2.7 0 3 0 4 .1 2.7.1 4 1.4 4.1 4.1.1 1 .1 1.3.1 4s0 3-.1 4c-.1 2.7-1.4 4-4.1 4.1-1 .1-1.3.1-4 .1s-3 0-4-.1c-2.7-.1-4-1.4-4.1-4.1-.1-1-.1-1.3-.1-4s0-3 .1-4C4 5.3 5.3 4 8 3.9c1-.1 1.3-.1 4-.1z"/></svg></a>
+</div>
 
 <a href="#simular" class="float" aria-label="Simular pelo WhatsApp"><svg><use href="#wa"/></svg><span>Simular</span></a>
 

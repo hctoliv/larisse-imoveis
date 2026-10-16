@@ -39,7 +39,6 @@
 
   /* ================= nav ================= */
   const nav = $('.nav'), toggle = $('.nav__toggle'), float = $('.float'), hero = $('[data-hero]');
-  const heroInner = $('.hero__inner');
   const closeMenu = () => { nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false'); };
   toggle.addEventListener('click', () => {
     const open = nav.classList.toggle('is-open');
@@ -48,24 +47,14 @@
   });
   $$('.nav__links a').forEach(a => a.addEventListener('click', closeMenu));
 
-  /* ================= vídeos em loop ================= */
-  const loops = $$('.hero video');
-  if (reduce) loops.forEach(v => v.removeAttribute('autoplay'));
-  new IntersectionObserver(([e]) => loops.forEach(v => {
-    if (e.isIntersecting && !reduce) v.play().catch(() => {}); else v.pause();
-  }), { threshold: .05 }).observe(hero);
-
-  /* ================= tilt do vídeo do hero ================= */
-  const tilt = $('[data-tilt]');
-  if (fine && !reduce) {
-    hero.addEventListener('pointermove', e => {
-      const r = hero.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
-      tilt.style.setProperty('--ry', (x * 18).toFixed(2) + 'deg');
-      tilt.style.setProperty('--rx', (-y * 12).toFixed(2) + 'deg');
-    });
-    hero.addEventListener('pointerleave', () => { tilt.style.removeProperty('--ry'); tilt.style.removeProperty('--rx'); });
-  }
+  /* ================= flutuação no hero ================= */
+  // a Larisse e os selos se mexem de leve com o mouse e com a rolagem
+  const floats = $$('[data-float]');
+  let px = 0, py = 0;
+  if (fine && !reduce) hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect();
+    px = (e.clientX - r.left) / r.width - .5; py = (e.clientY - r.top) / r.height - .5;
+  });
 
   /* ================= revelar ao rolar ================= */
   const io = new IntersectionObserver(es => es.forEach(e => {
@@ -121,9 +110,15 @@
         const off = (r.top + r.height / 2 - vh / 2) * parseFloat(el.dataset.parallax);
         el.style.transform = el.tagName === 'IMG' ? `scale(1.12) translate3d(0,${off}px,0)` : `translate3d(0,${off}px,0)`;
       });
-      // hero some suavemente ao rolar
-      if (wide.matches) heroInner.style.opacity = 1 - clamp(y / hero.offsetHeight, 0, 1) * 1.1;
-      else heroInner.style.opacity = '';
+      // flutuação do hero
+      if (y < hero.offsetHeight) {
+        const t = performance.now() / 1000;
+        floats.forEach((el, i) => {
+          const k = parseFloat(el.dataset.float || 0) || 0;
+          const bob = k ? Math.sin(t * 1.4 + i * 2) * 6 : 0;
+          el.style.transform = `translate3d(${px * 24 * (k || .4)}px, ${py * 16 * (k || .4) + bob - y * .12 * (k || .4)}px, 0)`;
+        });
+      }
     }
 
     // jornada: a chave acompanha o centro da tela
@@ -187,14 +182,7 @@
     el.addEventListener('change', render);
   });
 
-  form.addEventListener('submit', ev => {
-    ev.preventDefault();
-    const req = [f.nome, f.renda, f.regiao];
-    let ok = true;
-    req.forEach(el => { const bad = !el.value.trim(); el.setAttribute('aria-invalid', bad); if (bad) ok = false; });
-    err.hidden = ok;
-    if (!ok) { req.find(el => !el.value.trim()).focus(); return; }
-    const msg = lines().join('\n');
+  const send = msg => {
     if (WA_NUMBER) {
       window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
     } else {
@@ -202,5 +190,40 @@
       navigator.clipboard?.writeText(msg).catch(() => {});
       window.open(IG_DM, '_blank', 'noopener');
     }
+  };
+
+  // regiões: escolhe a região no formulário e leva até ele
+  $$('[data-region]').forEach(b => b.addEventListener('click', () => {
+    f.regiao.value = b.dataset.region;
+    f.regiao.removeAttribute('aria-invalid');
+    render();
+    $('#simular').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+    setTimeout(() => f.nome.focus({ preventScroll: true }), reduce ? 0 : 700);
+  }));
+
+  // formulário rápido do hero
+  const lead = $('#lead-form'), lf = lead.elements, lErr = $('.lead__err');
+  lf.cel.addEventListener('input', () => {
+    const d = lf.cel.value.replace(/\D/g, '').slice(0, 11);
+    lf.cel.value = d.length > 6 ? `(${d.slice(0, 2)}) ${d.slice(2, d.length - 4)}-${d.slice(-4)}` : d.length > 2 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : d;
+  });
+  $$('input', lead).forEach(el => el.addEventListener('input', () => el.removeAttribute('aria-invalid')));
+  lead.addEventListener('submit', ev => {
+    ev.preventDefault();
+    const badNome = !lf.nome.value.trim(), badCel = lf.cel.value.replace(/\D/g, '').length < 10;
+    lf.nome.setAttribute('aria-invalid', badNome); lf.cel.setAttribute('aria-invalid', badCel);
+    lErr.hidden = !(badNome || badCel);
+    if (badNome || badCel) { (badNome ? lf.nome : lf.cel).focus(); return; }
+    send(`Oi, Larisse! Sou ${lf.nome.value.trim()} e quero saber mais sobre o Minha Casa Minha Vida.\nMeu celular: ${lf.cel.value}`);
+  });
+
+  form.addEventListener('submit', ev => {
+    ev.preventDefault();
+    const req = [f.nome, f.renda, f.regiao];
+    let ok = true;
+    req.forEach(el => { const bad = !el.value.trim(); el.setAttribute('aria-invalid', bad); if (bad) ok = false; });
+    err.hidden = ok;
+    if (!ok) { req.find(el => !el.value.trim()).focus(); return; }
+    send(lines().join('\n'));
   });
 })();
