@@ -1,7 +1,7 @@
 (() => {
   /* ================= configuração ================= */
   // WhatsApp da Larisse: só dígitos, com 55 + DDD (ex.: 5511900000000). Vazio = cai no direct do Instagram.
-  const WA_NUMBER = '';
+  const WA_NUMBER = '5511992377098';
   // ID do Pixel da Meta (Gerenciador de Eventos). Vazio = sem pixel.
   const META_PIXEL_ID = '';
   const IG_DM = 'https://ig.me/m/larisseimoveis';
@@ -224,6 +224,9 @@
     clearTimeout(tId); tId = setTimeout(() => typing.classList.remove('is-on'), 900);
   };
   $$('input, select', sim).forEach(el => { el.addEventListener('input', render); el.addEventListener('change', render); });
+
+  // link direto do WhatsApp no rodapé
+  $$('[data-wa-direct]').forEach(a => a.addEventListener('click', () => track('Contact', { content_name: 'rodape' })));
 
   // cliques nos CTAs que levam ao formulário final
   $$('[data-cta]').forEach(a => a.addEventListener('click', () => track('ViewContent', { content_name: 'cta_' + a.dataset.cta })));
