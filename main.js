@@ -12,6 +12,10 @@
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
+  // sem zoom no celular (o Safari do iPhone ignora o user-scalable do viewport)
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(t => document.addEventListener(t, e => e.preventDefault(), { passive: false }));
+  document.addEventListener('touchmove', e => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
   /* ================= origem do lead (UTM / anúncio) ================= */
   const KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
   const store = (() => { try { return sessionStorage; } catch (e) { return null; } })();
