@@ -3,7 +3,7 @@
   // WhatsApp da Larisse: só dígitos, com 55 + DDD (ex.: 5511900000000). Vazio = cai no direct do Instagram.
   const WA_NUMBER = '5511992377098';
   // ID do Pixel da Meta (Gerenciador de Eventos). Vazio = sem pixel.
-  const META_PIXEL_ID = '';
+  const META_PIXEL_ID = '1810458990170668';
   const IG_DM = 'https://ig.me/m/larisseimoveis';
 
   const $ = (s, r = document) => r.querySelector(s);
