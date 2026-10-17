@@ -119,7 +119,9 @@ form.is-sent > :not(.form__done):not(.lead__title) { display: none; }
 .hero__person { position: relative; justify-self: center; width: min(100%, 460px); }
 .hero__photo { margin: 0; position: relative; aspect-ratio: 4 / 5; border-radius: 999px 999px 28px 28px; overflow: hidden; background: var(--peach); box-shadow: 0 40px 80px -30px rgba(31, 42, 68, .45); }
 .hero__photo::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 10px rgba(255, 255, 255, .55); pointer-events: none; }
-.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 40%; }
+.hero__photo { background: #cfcac6; }
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.hero__mini { display: none; }
 .hero__person::before { content: ""; position: absolute; z-index: -1; inset: 6% -8% -5% 8%; border-radius: 999px 999px 28px 28px; background: var(--orange); }
 .badge { position: absolute; z-index: 2; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 16px; font-size: 13px; line-height: 1.25; font-weight: 500; box-shadow: 0 20px 40px -14px rgba(31, 42, 68, .45); }
 .badge b { font-size: 30px; letter-spacing: -.04em; line-height: 1; }
@@ -297,6 +299,16 @@ form.is-sent > :not(.form__done):not(.lead__title) { display: none; }
   .hero { padding: 80px 0 40px; }
   .hero__grid, .about, .sim, .journey, .perks__grid, .faq { grid-template-columns: 1fr; }
   .hero__person { display: none; }
+  .hero__mini {
+    display: block; float: right; width: 40%; max-width: 190px; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 15%;
+    margin: 4px 0 8px 14px; border-radius: 999px 999px 18px 18px; background: #cfcac6;
+    box-shadow: 10px 10px 0 var(--orange), 0 20px 40px -18px rgba(31, 42, 68, .5);
+  }
+  .who { display: none; }
+  .hero h1 { margin-top: 4px; }
+  .hero__lead { margin-bottom: 18px; }
+  .hero__lead { clear: none; }
+  .lead { clear: both; }
   .journey__head, .faq__head { position: static; }
   .proofbar__list { grid-template-columns: 1fr 1fr; }
   .proofbar__list li { padding: 16px 0 16px 16px; }
