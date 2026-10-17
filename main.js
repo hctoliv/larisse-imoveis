@@ -1,6 +1,9 @@
 (() => {
-  // número do WhatsApp da Larisse (só dígitos, com 55 + DDD). Vazio = cai no direct do Instagram.
+  /* ================= configuração ================= */
+  // WhatsApp da Larisse: só dígitos, com 55 + DDD (ex.: 5511900000000). Vazio = cai no direct do Instagram.
   const WA_NUMBER = '';
+  // ID do Pixel da Meta (Gerenciador de Eventos). Vazio = sem pixel.
+  const META_PIXEL_ID = '';
   const IG_DM = 'https://ig.me/m/larisseimoveis';
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -9,167 +12,206 @@
   const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
+  /* ================= origem do lead (UTM / anúncio) ================= */
+  const KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
+  const store = (() => { try { return sessionStorage; } catch (e) { return null; } })();
+  const qs = new URLSearchParams(location.search);
+  const src = {};
+  KEYS.forEach(k => {
+    let v = qs.get(k);
+    try { v = v || store?.getItem('lr_' + k); if (v) store?.setItem('lr_' + k, v); } catch (e) {}
+    if (v) src[k] = v;
+  });
+  const fromAd = !!(src.fbclid || /fb|ig|insta|meta|face/i.test(src.utm_source || ''));
+
+  /* ================= Pixel da Meta ================= */
+  const track = (ev, data) => { try { if (window.fbq) window.fbq('track', ev, data); } catch (e) {} };
+  if (META_PIXEL_ID) {
+    !function (f, b, e, v, n, t, s) { if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = []; t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s); }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.fbq('init', META_PIXEL_ID);
+    window.fbq('track', 'PageView');
+  }
+
   /* ================= texto em palavras ================= */
-  // envolve cada palavra (mantendo <em>) para animar
   const split = (el, inner) => {
-    const delay = { i: 0 };
-    const walk = node => {
-      [...node.childNodes].forEach(n => {
-        if (n.nodeType === 3) {
-          const frag = document.createDocumentFragment();
-          n.textContent.split(/(\s+)/).forEach(part => {
-            if (!part) return;
-            if (/^\s+$/.test(part)) { frag.append(' '); return; }
-            const w = document.createElement('span');
-            w.className = 'w';
-            const d = (delay.i++ * .06) + 's';
-            if (inner) { const s = document.createElement('span'); s.textContent = part; s.style.setProperty('--d', d); w.append(s); }
-            else { w.textContent = part; w.style.setProperty('--d', d); }
-            frag.append(w);
-          });
-          n.replaceWith(frag);
-        } else if (n.nodeType === 1) walk(n);
-      });
-    };
+    let i = 0;
+    const walk = node => [...node.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(' '); return; }
+          const w = document.createElement('span');
+          w.className = 'w';
+          const d = (i++ * .055) + 's';
+          if (inner) { const s = document.createElement('span'); s.textContent = part; s.style.setProperty('--d', d); w.append(s); }
+          else { w.textContent = part; w.style.setProperty('--d', d); }
+          frag.append(w);
+        });
+        n.replaceWith(frag);
+      } else if (n.nodeType === 1) walk(n);
+    });
     walk(el);
   };
   $$('[data-split]').forEach(el => split(el, true));
   $$('[data-words]').forEach(el => split(el, false));
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('is-ready')));
-
-  /* ================= nav ================= */
-  const nav = $('.nav'), toggle = $('.nav__toggle'), float = $('.float'), hero = $('[data-hero]');
-  const closeMenu = () => { nav.classList.remove('is-open'); toggle.setAttribute('aria-expanded', 'false'); };
-  toggle.addEventListener('click', () => {
-    const open = nav.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', open);
-    toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-  });
-  $$('.nav__links a').forEach(a => a.addEventListener('click', closeMenu));
-
-  /* ================= flutuação no hero ================= */
-  // a Larisse e os selos se mexem de leve com o mouse e com a rolagem
-  const floats = $$('[data-float]');
-  let px = 0, py = 0;
-  if (fine && !reduce) hero.addEventListener('pointermove', e => {
-    const r = hero.getBoundingClientRect();
-    px = (e.clientX - r.left) / r.width - .5; py = (e.clientY - r.top) / r.height - .5;
-  });
+  // garantia: o hero nunca fica escondido se a animação não rodar
+  setTimeout(() => document.body.classList.add('is-ready'), 700);
 
   /* ================= revelar ao rolar ================= */
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-  }), { rootMargin: '0px 0px -12% 0px' });
+  }), { rootMargin: '0px 0px -10% 0px' });
   $$('[data-words], [data-clip]').forEach(el => io.observe(el));
-  if (!reduce) $$('.about__copy > *, .proof figure, .sim__form, .chat').forEach((el, i) => {
-    el.classList.add('reveal'); el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el);
+  if (!reduce) $$('.perks__list li, .about__wins figure, .faq__list details, .sim__form, .chat, .proofbar__list li').forEach((el, i) => {
+    el.classList.add('reveal'); el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el);
   });
 
-  /* ================= loop de rolagem ================= */
-  const bar = $('[data-progress]');
-  const marquee = $('[data-marquee]');
+  /* ================= rolagem ================= */
+  const nav = $('.nav'), bar = $('[data-progress]'), hero = $('[data-hero]');
   const journey = $('[data-journey]'), steps = $$('.journey__steps li');
-  const gallery = $('[data-gallery]'), track = $('[data-gallery-track]'), gBar = $('[data-gallery-bar]'), gI = $('[data-gallery-i]');
-  const slides = $$('.slide', track);
-  const parallax = $$('[data-parallax]');
-  const wide = matchMedia('(min-width: 821px)');
+  const parallax = $$('[data-parallax]'), floats = $$('[data-float]');
+  const heroForm = $('#lead-form'), dock = $('[data-dock]');
+  const forms = $$('form[data-form]');
+  const onScreen = new Set();
+  let px = 0, py = 0, ticking = false;
 
-  // galeria: a seção ganha altura para a rolagem vertical virar horizontal
-  let gDist = 0;
-  const sizeGallery = () => {
-    if (wide.matches && !reduce) {
-      track.style.transform = '';
-      gDist = Math.max(0, track.scrollWidth - innerWidth);
-      gallery.style.height = (innerHeight + gDist) + 'px';
-    } else { gDist = 0; gallery.style.height = ''; track.style.transform = ''; }
-  };
-  sizeGallery();
-  addEventListener('resize', sizeGallery);
-  addEventListener('load', sizeGallery);
-
-  let mx = 0, lastY = scrollY, vel = 0;
   const frame = () => {
+    ticking = false;
     const y = scrollY, vh = innerHeight;
     const max = document.documentElement.scrollHeight - vh;
     bar.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-    nav.classList.toggle('is-solid', y > 40);
-    float.classList.toggle('is-on', y > hero.offsetHeight * .8);
+    nav.classList.toggle('is-solid', y > 20);
+    // barra fixa: aparece depois do formulário do hero e some quando há formulário na tela
+    dock.classList.toggle('is-on', heroForm.getBoundingClientRect().bottom < 0 && onScreen.size === 0);
 
-    if (!reduce) {
-      // faixa: anda sempre e acelera com a rolagem
-      vel += ((y - lastY) - vel) * .1;
-      mx -= .6 + Math.abs(vel) * .35;
-      const half = marquee.scrollWidth / 2;
-      if (-mx >= half) mx += half;
-      marquee.style.transform = `translate3d(${mx}px,0,0)`;
-
-      // parallax
-      parallax.forEach(el => {
-        const r = el.getBoundingClientRect();
-        if (r.bottom < -200 || r.top > vh + 200) return;
-        const off = (r.top + r.height / 2 - vh / 2) * parseFloat(el.dataset.parallax);
-        el.style.transform = el.tagName === 'IMG' ? `scale(1.12) translate3d(0,${off}px,0)` : `translate3d(0,${off}px,0)`;
-      });
-      // flutuação do hero
-      if (y < hero.offsetHeight) {
-        const t = performance.now() / 1000;
-        floats.forEach((el, i) => {
-          const k = parseFloat(el.dataset.float || 0) || 0;
-          const bob = k ? Math.sin(t * 1.4 + i * 2) * 6 : 0;
-          el.style.transform = `translate3d(${px * 24 * (k || .4)}px, ${py * 16 * (k || .4) + bob - y * .12 * (k || .4)}px, 0)`;
-        });
-      }
-    }
-
-    // jornada: a chave acompanha o centro da tela
     const jr = journey.getBoundingClientRect();
     journey.style.setProperty('--p', clamp((vh * .55 - jr.top) / jr.height, 0, 1).toFixed(4));
-    steps.forEach(li => li.classList.toggle('is-on', li.getBoundingClientRect().top < vh * .62));
+    steps.forEach(li => li.classList.toggle('is-on', li.getBoundingClientRect().top < vh * .65));
 
-    // galeria horizontal
-    if (gDist) {
-      const g = clamp(-gallery.getBoundingClientRect().top / gDist, 0, 1);
-      track.style.transform = `translate3d(${-g * gDist}px,0,0)`;
-      gBar.style.setProperty('--g', (.2 + g * .8).toFixed(4));
-      gI.textContent = String(Math.floor(g * (slides.length - .01)) + 1).padStart(2, '0');
+    if (!reduce) {
+      parallax.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        el.style.transform = `scale(1.1) translate3d(0,${(r.top + r.height / 2 - vh / 2) * parseFloat(el.dataset.parallax)}px,0)`;
+      });
+      if (fine && y < hero.offsetHeight) floats.forEach(el => {
+        const k = parseFloat(el.dataset.float) || .4;
+        el.style.transform = `translate3d(${px * 22 * k}px, ${py * 14 * k - y * .1 * k}px, 0)`;
+      });
     }
-
-    lastY = y;
-    requestAnimationFrame(frame);
   };
-  requestAnimationFrame(frame);
+  const queue = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+  if (fine && !reduce) hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect();
+    px = (e.clientX - r.left) / r.width - .5; py = (e.clientY - r.top) / r.height - .5;
+    queue();
+  });
+  new IntersectionObserver(es => {
+    es.forEach(e => e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target));
+    queue();
+  }, { threshold: .15 }).observe(forms[0]);
+  const formObs = new IntersectionObserver(es => {
+    es.forEach(e => e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target));
+    queue();
+  }, { threshold: .15 });
+  forms.slice(1).forEach(f => formObs.observe(f));
+  addEventListener('scroll', queue, { passive: true });
+  addEventListener('resize', queue);
+  frame();
 
-  // galeria no celular: contador acompanha o deslize
-  track.addEventListener('scroll', () => {
-    if (gDist) return;
-    const g = track.scrollLeft / Math.max(1, track.scrollWidth - track.clientWidth);
-    gBar.style.setProperty('--g', (.2 + g * .8).toFixed(4));
-    gI.textContent = String(Math.round(g * (slides.length - 1)) + 1).padStart(2, '0');
-  }, { passive: true });
+  /* ================= histórias ================= */
+  const trackEl = $('[data-track]');
+  $$('.arrow').forEach(b => b.addEventListener('click', () => {
+    const w = trackEl.querySelector('.story').offsetWidth + 16;
+    trackEl.scrollBy({ left: w * +b.dataset.dir, behavior: reduce ? 'auto' : 'smooth' });
+  }));
+  const vStory = $('.story--video'), video = $('video', vStory);
+  $('.story__play', vStory).addEventListener('click', () => {
+    video.controls = true; video.play().catch(() => {});
+    track('ViewContent', { content_name: 'video_emilly' });
+  });
+  video.addEventListener('play', () => vStory.classList.add('is-playing'));
+  video.addEventListener('pause', () => vStory.classList.remove('is-playing'));
+  new IntersectionObserver(([e]) => { if (!e.isIntersecting) video.pause(); }, { threshold: .3 }).observe(video);
 
-  /* ================= vídeo com som ================= */
-  const vSlide = $('.slide--video'), full = $('video', vSlide), play = $('.slide__play', vSlide);
-  play.addEventListener('click', () => { full.controls = true; full.play().catch(() => {}); });
-  full.addEventListener('play', () => vSlide.classList.add('is-playing'));
-  full.addEventListener('pause', () => vSlide.classList.remove('is-playing'));
-  new IntersectionObserver(([e]) => { if (!e.isIntersecting) full.pause(); }, { threshold: .3 }).observe(full);
-
-  /* ================= simulação → WhatsApp ================= */
-  const form = $('#sim-form'), err = $('.sim__err'), chat = $('[data-chat]'), typing = $('[data-typing]');
-  const f = form.elements;
+  /* ================= formulários → WhatsApp ================= */
+  const digits = s => s.replace(/\D/g, '');
+  const maskPhone = el => {
+    let d = digits(el.value);
+    if (d.startsWith('55') && d.length > 11) d = d.slice(2);
+    d = d.slice(0, 11);
+    el.value = d.length > 6 ? `(${d.slice(0, 2)}) ${d.slice(2, d.length - 4)}-${d.slice(-4)}`
+      : d.length > 2 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : d;
+  };
   const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const lines = () => [
-    'Oi, Larisse! Quero fazer minha simulação do Minha Casa Minha Vida.',
-    f.nome.value.trim() && `Nome: ${f.nome.value.trim()}`,
-    f.renda.value && `Renda familiar: ${f.renda.value}`,
-    f.regiao.value && `Região: ${f.regiao.value}`,
-    `FGTS: ${f.fgts.value}`
-  ].filter(Boolean);
 
-  // prévia ao vivo da mensagem
+  const buildLines = f => {
+    const v = n => (f.elements[n] ? f.elements[n].value : '').trim();
+    return [
+      'Oi, Larisse! Quero fazer minha simulação do Minha Casa Minha Vida.',
+      v('nome') && `Nome: ${v('nome')}`,
+      v('cel') && `WhatsApp: ${v('cel')}`,
+      v('renda') && `Renda familiar: ${v('renda')}`,
+      v('regiao') && `Região: ${v('regiao')}`,
+      v('fgts') && `FGTS: ${v('fgts')}`
+    ].filter(Boolean);
+  };
+
+  const destination = msg => WA_NUMBER ? `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}` : IG_DM;
+
+  // no navegador interno do Instagram/Facebook, abrir na mesma aba é o que funciona
+  const go = url => {
+    if (fine && window.open(url, '_blank', 'noopener')) return;
+    location.href = url;
+  };
+
+  const validate = f => {
+    const { nome, cel, renda } = f.elements;
+    const bad = [], miss = [];
+    if (!nome.value.trim()) { bad.push(nome); miss.push('seu nome'); }
+    if (digits(cel.value).length < 10) { bad.push(cel); miss.push('um WhatsApp com DDD'); }
+    if (!renda.value) { bad.push(renda); miss.push('sua faixa de renda'); }
+    [nome, cel, renda].forEach(el => el.setAttribute('aria-invalid', bad.includes(el)));
+    const list = miss.length > 1 ? miss.slice(0, -1).join(', ') + ' e ' + miss.at(-1) : miss[0];
+    return { ok: !bad.length, first: bad[0], msg: miss.length ? `Falta ${list}.` : '' };
+  };
+
+  forms.forEach(f => {
+    const err = $('.form__err', f), done = $('.form__done', f), open = $('[data-open]', f);
+    f.elements.cel.addEventListener('input', () => maskPhone(f.elements.cel));
+    $$('input, select', f).forEach(el => el.addEventListener('input', () => { el.removeAttribute('aria-invalid'); err.hidden = true; }));
+    let started = false;
+    f.addEventListener('focusin', () => { if (!started) { started = true; track('InitiateCheckout', { content_name: f.dataset.form }); } });
+
+    f.addEventListener('submit', ev => {
+      ev.preventDefault();
+      const r = validate(f);
+      if (!r.ok) { err.textContent = r.msg; err.hidden = false; r.first.focus(); return; }
+
+      const lines = buildLines(f);
+      if (fromAd) lines.push(`(Vim pelo anúncio${src.utm_campaign ? ': ' + src.utm_campaign : ''})`);
+      const msg = lines.join('\n');
+      const url = destination(msg);
+      if (!WA_NUMBER && navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
+
+      track('Lead', { content_name: f.dataset.form, content_category: f.elements.renda.value });
+      track('Contact');
+
+      open.href = url;
+      f.classList.add('is-sent');
+      done.hidden = false;
+      // pequena pausa para o pixel registrar antes de sair da página
+      setTimeout(() => go(url), 350);
+    });
+  });
+
+  /* ================= prévia da mensagem ================= */
+  const sim = $('#sim-form'), chat = $('[data-chat]'), typing = $('[data-typing]');
   let tId;
   const render = () => {
-    const [first, ...rest] = lines();
+    const [first, ...rest] = buildLines(sim);
     chat.innerHTML = esc(first) + rest.map(l => {
       const i = l.indexOf(': ');
       return `\n${esc(l.slice(0, i))}: <mark>${esc(l.slice(i + 2))}</mark>`;
@@ -177,53 +219,8 @@
     typing.classList.add('is-on');
     clearTimeout(tId); tId = setTimeout(() => typing.classList.remove('is-on'), 900);
   };
-  $$('input, select', form).forEach(el => {
-    el.addEventListener('input', () => { el.removeAttribute('aria-invalid'); render(); });
-    el.addEventListener('change', render);
-  });
+  $$('input, select', sim).forEach(el => { el.addEventListener('input', render); el.addEventListener('change', render); });
 
-  const send = msg => {
-    if (WA_NUMBER) {
-      window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
-    } else {
-      // sem número ainda: copia a mensagem e abre o direct do Instagram
-      navigator.clipboard?.writeText(msg).catch(() => {});
-      window.open(IG_DM, '_blank', 'noopener');
-    }
-  };
-
-  // regiões: escolhe a região no formulário e leva até ele
-  $$('[data-region]').forEach(b => b.addEventListener('click', () => {
-    f.regiao.value = b.dataset.region;
-    f.regiao.removeAttribute('aria-invalid');
-    render();
-    $('#simular').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
-    setTimeout(() => f.nome.focus({ preventScroll: true }), reduce ? 0 : 700);
-  }));
-
-  // formulário rápido do hero
-  const lead = $('#lead-form'), lf = lead.elements, lErr = $('.lead__err');
-  lf.cel.addEventListener('input', () => {
-    const d = lf.cel.value.replace(/\D/g, '').slice(0, 11);
-    lf.cel.value = d.length > 6 ? `(${d.slice(0, 2)}) ${d.slice(2, d.length - 4)}-${d.slice(-4)}` : d.length > 2 ? `(${d.slice(0, 2)}) ${d.slice(2)}` : d;
-  });
-  $$('input', lead).forEach(el => el.addEventListener('input', () => el.removeAttribute('aria-invalid')));
-  lead.addEventListener('submit', ev => {
-    ev.preventDefault();
-    const badNome = !lf.nome.value.trim(), badCel = lf.cel.value.replace(/\D/g, '').length < 10;
-    lf.nome.setAttribute('aria-invalid', badNome); lf.cel.setAttribute('aria-invalid', badCel);
-    lErr.hidden = !(badNome || badCel);
-    if (badNome || badCel) { (badNome ? lf.nome : lf.cel).focus(); return; }
-    send(`Oi, Larisse! Sou ${lf.nome.value.trim()} e quero saber mais sobre o Minha Casa Minha Vida.\nMeu celular: ${lf.cel.value}`);
-  });
-
-  form.addEventListener('submit', ev => {
-    ev.preventDefault();
-    const req = [f.nome, f.renda, f.regiao];
-    let ok = true;
-    req.forEach(el => { const bad = !el.value.trim(); el.setAttribute('aria-invalid', bad); if (bad) ok = false; });
-    err.hidden = ok;
-    if (!ok) { req.find(el => !el.value.trim()).focus(); return; }
-    send(lines().join('\n'));
-  });
+  // cliques nos CTAs que levam ao formulário final
+  $$('[data-cta]').forEach(a => a.addEventListener('click', () => track('ViewContent', { content_name: 'cta_' + a.dataset.cta })));
 })();
