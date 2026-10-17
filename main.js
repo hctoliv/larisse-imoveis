@@ -165,10 +165,15 @@
 
   const destination = msg => WA_NUMBER ? `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}` : IG_DM;
 
-  // no navegador interno do Instagram/Facebook, abrir na mesma aba é o que funciona
+  // computador: nova aba, aberta já no clique (senão o navegador bloqueia como popup)
+  // celular e navegador interno do Instagram/Facebook: mesma aba, que é o que funciona
   const go = url => {
-    if (fine && window.open(url, '_blank', 'noopener')) return;
-    location.href = url;
+    if (fine) {
+      const w = window.open(url, '_blank');
+      if (w) { try { w.opener = null; } catch (e) {} return; }
+    }
+    // pequena pausa para o pixel registrar antes de sair da página
+    setTimeout(() => { location.href = url; }, 350);
   };
 
   const validate = f => {
@@ -206,8 +211,7 @@
       open.href = url;
       f.classList.add('is-sent');
       done.hidden = false;
-      // pequena pausa para o pixel registrar antes de sair da página
-      setTimeout(() => go(url), 350);
+      go(url);
     });
   });
 
