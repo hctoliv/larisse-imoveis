@@ -74,7 +74,8 @@
 
   /* ================= rolagem ================= */
   const nav = $('.nav'), bar = $('[data-progress]'), hero = $('[data-hero]');
-  const journey = $('[data-journey]'), steps = $$('.journey__steps li');
+  const journey = $('[data-journey]'), steps = $$('.journey__steps li'), jImgs = $$('.journey__frame img');
+  let jCur = 0;
   const parallax = $$('[data-parallax]'), floats = $$('[data-float]');
   const heroForm = $('#lead-form'), dock = $('[data-dock]');
   const forms = $$('form[data-form]');
@@ -92,7 +93,9 @@
 
     const jr = journey.getBoundingClientRect();
     journey.style.setProperty('--p', clamp((vh * .55 - jr.top) / jr.height, 0, 1).toFixed(4));
-    steps.forEach(li => li.classList.toggle('is-on', li.getBoundingClientRect().top < vh * .65));
+    let jOn = 0;
+    steps.forEach((li, i) => { const on = li.getBoundingClientRect().top < vh * .65; li.classList.toggle('is-on', on); if (on) jOn = i; });
+    if (jOn !== jCur && jImgs.length) { jCur = jOn; jImgs.forEach((im, i) => im.classList.toggle('is-on', i === jOn)); }
 
     if (!reduce) {
       parallax.forEach(el => {

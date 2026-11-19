@@ -23,7 +23,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
   <link rel="preload" as="image" href="img/larisse-mini.webp" media="(max-width: 820px)" fetchpriority="high">
   <link rel="preload" as="image" href="img/larisse-960.webp" media="(min-width: 821px)" fetchpriority="high">
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"RealEstateAgent","name":"Larisse Silva","description":"Corretora especialista Minha Casa Minha Vida em São Paulo. CRECI 335509.","image":"https://larisseimoveis.com.br/img/larisse-560.webp","areaServed":"São Paulo, SP","telephone":"+55-11-99237-7098","url":"https://larisseimoveis.com.br/","sameAs":["https://www.instagram.com/larisseimoveis/"]}
   </script>
@@ -113,7 +113,7 @@
 
       <div class="hero__person rise" style="--d:.25s">
         <figure class="hero__photo" data-float=".25">
-          <img src="img/larisse-960.webp" srcset="img/larisse-560.webp 560w, img/larisse-960.webp 960w" sizes="(min-width: 821px) 460px, 0px" alt="Larisse Silva, corretora especialista Minha Casa Minha Vida, de óculos e blazer preto" width="960" height="1200" loading="lazy">
+          <img src="img/larisse-960.webp" srcset="img/larisse-560.webp 560w, img/larisse-960.webp 960w" sizes="(min-width: 821px) 460px, 0px" alt="Larisse Silva, corretora especialista Minha Casa Minha Vida, de blazer preto e mãos na cintura" width="960" height="1200" loading="lazy">
         </figure>
         <span class="badge badge--a" data-float="-1"><b>1º</b> lugar no Brasil<br>como vendedora</span>
         <span class="badge badge--b" data-float=".6"><svg><use href="#key"/></svg> Mais um sonho<br>realizado</span>
@@ -134,18 +134,11 @@
   <!-- CONDIÇÕES -->
   <section class="perks">
     <div class="wrap perks__grid">
-      <div class="perks__art" aria-hidden="true">
-        <svg viewBox="0 0 320 260">
-          <circle cx="232" cy="70" r="40" fill="#d9572c" data-spin/>
-          <circle cx="150" cy="150" r="104" fill="#1f2a44"/>
-          <path d="M40 222c40-30 200-30 240 0v20H40z" fill="#c9d3b4"/>
-          <path d="M96 140l58-48 58 48v82H96z" fill="#f2e7dc"/>
-          <path d="M84 146l70-60 70 60" fill="none" stroke="#d9572c" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="140" y="176" width="28" height="46" rx="3" fill="#1f2a44"/>
-          <rect x="108" y="150" width="22" height="20" rx="2" fill="#f7dcd0"/>
-          <rect x="178" y="150" width="22" height="20" rx="2" fill="#f7dcd0"/>
-        </svg>
-      </div>
+      <figure class="perks__art">
+        <span class="perks__sun" aria-hidden="true"></span>
+        <img src="img/larisse-escritorio-720.webp" alt="Larisse Silva sorrindo à mesa do escritório" width="720" height="900" loading="lazy">
+        <span class="perks__tag" aria-hidden="true"><svg><use href="#key"/></svg>FGTS + subsídio</span>
+      </figure>
       <div>
         <h2 class="perks__title" data-words>Você pode conquistar o seu apê, com condições que cabem no bolso</h2>
         <ul class="perks__list">
@@ -208,27 +201,37 @@
         <p class="eyebrow">Como funciona</p>
         <h2 data-words>Do sonho à chave na mão</h2>
         <p class="muted">Quatro etapas, e eu do seu lado em todas elas.</p>
+        <figure class="journey__frame" aria-hidden="true">
+          <img class="is-on" src="img/etapa-1.webp" alt="" width="800" height="1000" loading="lazy">
+          <img src="img/etapa-2.webp" alt="" width="800" height="1000" loading="lazy">
+          <img src="img/etapa-3.webp" alt="" width="800" height="1000" loading="lazy">
+          <img src="img/etapa-4.webp" alt="" width="800" height="1000" loading="lazy">
+        </figure>
       </div>
       <div class="journey__path" data-journey>
         <span class="journey__line" aria-hidden="true"><span class="journey__fill"></span><span class="journey__key"><svg><use href="#key"/></svg></span></span>
         <ol class="journey__steps">
           <li>
             <span class="journey__n">01</span>
+            <img class="journey__pic" src="img/etapa-1.webp" alt="Larisse no notebook fazendo uma simulação" width="800" height="1000" loading="lazy">
             <h3>Simulação</h3>
             <p>Você me conta sua renda e onde quer morar. Eu calculo quanto de subsídio e de parcela cabe pra você.</p>
           </li>
           <li>
             <span class="journey__n">02</span>
+            <img class="journey__pic" src="img/etapa-2.webp" alt="Larisse ao celular separando opções de imóveis" width="800" height="1000" loading="lazy">
             <h3>O imóvel certo</h3>
             <p>Te mostro as opções por região e renda, e a gente visita o decorado junto.</p>
           </li>
           <li>
             <span class="journey__n">03</span>
+            <img class="journey__pic" src="img/etapa-3.webp" alt="Larisse preenchendo a documentação" width="800" height="1000" loading="lazy">
             <h3>Aprovação</h3>
             <p>Cuido da documentação e da análise de crédito com você. O FGTS, quando dá, entra aqui.</p>
           </li>
           <li>
             <span class="journey__n">04</span>
+            <img class="journey__pic" src="img/etapa-4.webp" alt="Larisse sorrindo, sentada" width="800" height="1000" loading="lazy">
             <h3>Chave na mão</h3>
             <p>Acompanho até a entrega das chaves. O primeiro lar a gente nunca esquece.</p>
           </li>
@@ -241,7 +244,7 @@
   <section class="section about-wrap" id="sobre">
     <div class="wrap about">
       <figure class="about__photo" data-clip>
-        <img data-parallax="0.06" src="img/premio-2025-560.webp" srcset="img/premio-2025-560.webp 560w, img/premio-2025-900.webp 900w" sizes="(min-width: 821px) 440px, 90vw" alt="Larisse Silva segurando o troféu de primeiro lugar em vendas de 2025" loading="lazy" width="560" height="747">
+        <img data-parallax="0.06" src="img/larisse-sobre-600.webp" srcset="img/larisse-sobre-600.webp 600w, img/larisse-sobre-900.webp 900w" sizes="(min-width: 821px) 440px, 90vw" alt="Larisse Silva sentada, sorrindo, de roupa marrom" loading="lazy" width="600" height="750">
       </figure>
       <div class="about__copy">
         <p class="eyebrow">Quem vai te atender</p>
@@ -250,6 +253,7 @@
         <p>Sou corretora especialista em Minha Casa Minha Vida e atendo todas as regiões de São Paulo. Ver histórias de famílias florescendo no primeiro lar é o que me move todos os dias.</p>
         <p>Em 2025 fiquei em 1º lugar no Brasil como vendedora. Gratidão a Deus, à minha equipe e a cada família que confiou no meu trabalho.</p>
         <div class="about__wins">
+          <figure><img src="img/premio-2025-560.webp" alt="Larisse segurando o troféu de primeiro lugar em vendas de 2025" loading="lazy" width="560" height="747"><figcaption>Troféu 2025</figcaption></figure>
           <figure><img src="img/podio-brasil-480.webp" alt="Pódio de vendas com Larisse em primeiro lugar" loading="lazy" width="480" height="480"><figcaption>1º lugar no Brasil</figcaption></figure>
           <figure><img src="img/ranking-agosto-480.webp" alt="Telão de premiação com a Larisse em destaque" loading="lazy" width="480" height="640"><figcaption>Destaque de agosto/25</figcaption></figure>
           <figure><img src="img/equipe-480.webp" alt="Larisse com a equipe de vendas em 2026" loading="lazy" width="480" height="360"><figcaption>Equipe 2026</figcaption></figure>
@@ -375,6 +379,6 @@
   <a href="#simular" class="btn btn--block" data-cta="dock"><svg class="ico"><use href="#wa"/></svg>Quero minha simulação</a>
 </div>
 
-<script src="main.js?v=14" defer></script>
+<script src="main.js?v=15" defer></script>
 </body>
 </html>
